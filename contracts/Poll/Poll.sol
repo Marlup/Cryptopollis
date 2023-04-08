@@ -12,7 +12,6 @@ import "./IPoll.sol";
 * of gwei cost for voting function execution. 5 Accept donations to contract, but avoid
 * any withdrawal, even from the deployer of the contract
 *
-* A similar restriction must be applied to 'question' and each 'option element' states.
 */
 contract Poll is DataStructure, IPoll {
     address private _owner;

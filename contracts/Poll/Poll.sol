@@ -7,9 +7,10 @@ import "../Access/PrivacyAccess.sol";
 import "./IPoll.sol";
 
 /**
-* TODO: Restrict the functions with loop logic in order to avoid infitine or too
-* high number of iterations. Proposal could be to normalized a reasonable limit 
-* in number of options per poll.
+* TODO: 1 Limit length of question. 2 Limit length of options array. 3 Limit length
+* of each option. 4 Function to payback from contract to voter a percentage (say 60-80%) 
+* of gwei cost for voting function execution. 5 Accept donations to contract, but avoid
+* any withdrawal, even from the deployer of the contract
 *
 * A similar restriction must be applied to 'question' and each 'option element' states.
 */

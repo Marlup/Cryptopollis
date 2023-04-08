@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: MIT
+pragma solidity >=0.7.0 <0.9.0;
+
 contract TestWalletDonation {
     address owner;
     address payable thisAddress;
@@ -29,7 +32,6 @@ contract TestWalletDonation {
 
     // We would expect spents to be lower if function payWithAid()
     // is used.
-
     function payWithoutAid() public payable returns(bool) {
         // Simulate a vote. We are only interested in spents.
         //bool status = vote();
@@ -39,7 +41,6 @@ contract TestWalletDonation {
     }
     function payWithAid(address payable to) public payable returns(uint) {
         // Simulate a vote. We are only interested in spents.
-        //bool status = vote();
         (bool status, ) = _simulatedFeeAddress.call{value: simulatedVotingFee}("");
         require(status, "Vote failed");
         // Generate aid amount
@@ -64,18 +65,6 @@ contract TestWalletDonation {
     }
     function getBalance(address from) public view returns(uint) {
         return from.balance;
-    }
-    function setBalanceStart(address from) public {
-        _balanceStart = from.balance;
-    }
-    function setBalanceEnd(address from) public {
-        _balanceEnd = from.balance;
-    }
-    function getBalanceDiff() public view returns(uint){
-        return _balanceStart -_balanceEnd;
-    }
-    function setBalanceTest(address from) public view returns(uint){
-        return getBalance(from) + _aid;
     }
     receive() external payable {}
     fallback() external payable {}

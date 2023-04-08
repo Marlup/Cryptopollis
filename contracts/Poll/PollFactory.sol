@@ -1,11 +1,11 @@
-// SPDX-License-Identifier: GPL-3.0
+// SPDX-License-Identifier: MIT
 pragma solidity >=0.7.0 <0.9.0;
 
 // Import contracts
 import "./Poll.sol";
 import "./IPollFactory.sol";
 import "../Utils/Context.sol";
-import "../Utils/StateLimits.sol";
+import "../Utils/Limits.sol";
 // Import Libraries
 
 /**

@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0
+// SPDX-License-Identifier: MIT
 pragma solidity >=0.7.0 <0.9.0;
 
 // Import contracts
@@ -11,9 +11,8 @@ import "./IPoll.sol";
 * of each option. 4 Function to payback from contract to voter a percentage (say 60-80%) 
 * of gwei cost for voting function execution. 5 Accept donations to contract, but avoid
 * any withdrawal, even from the deployer of the contract
-*
 */
-contract Poll is DataStructure, IPoll {
+contract Poll is IPoll {
     address private _owner;
     address private _factory;
     PrivacyAccess _accessor;
@@ -24,19 +23,19 @@ contract Poll is DataStructure, IPoll {
     Option[] private _optionData;
 
     // Store vote date of voter
-    mapping(address => uint) private _votingDate;
+    //mapping(address => uint) private _votingDate;
     // Store option of voter
-    mapping(address => uint) private _voterOption;
+    //mapping(address => uint) private _voterOption;
+    mapping(address => Voter) private _voter;
 
     // msg.sender is not the original caller, it can be a contract. From is the address original caller
-    constructor (address from, address factory, string memory question, string[] memory options, uint openDate, uint liveDays, bool _isPrivate) {
-        _owner = from;
-        _accessor = new PrivacyAccess(from);
-        // Build poll and option data
-        require(bytes(question).length > 1, "Question is empty");
+    constructor(address from, address factory, string memory question, string[] memory options, uint openDate, uint liveDays, bool _isPrivate) {
+        require(bytes(question).length > 0, "Question is empty");
         require(options.length > 1, "Number of options cannot be less than 1");
         require(liveDays > 0, "Live time cannot be lower than 1 day");
-        
+        // Build poll and option data
+        _owner = from;
+        _accessor = new PrivacyAccess(from);
         _factory = factory;
         _data.question = question;
         uint currentTimestamp = block.timestamp;
@@ -51,7 +50,6 @@ contract Poll is DataStructure, IPoll {
             //require(bytes(options[i]).length <= generalLimits.optionLength);
             _optionData.push(Option({option: options[i], nVotes: 0}));
         }
-
         if (_isPrivate) {
             _accessor.togglePrivacy(from);
         }
@@ -63,7 +61,8 @@ contract Poll is DataStructure, IPoll {
      */
     modifier canVote(address from, uint optionIndex) {
         require(!_accessor.isPrivate() || _accessor.hasAccess(from), "The poll is private");
-        require(_votingDate[from] == 0, "Voter cannot vote again");
+        //require(_votingDate[from] == 0, "Voter cannot vote again");
+        require(_voter[from].votingDate == 0, "Voter cannot vote again");
         require(optionIndex < _optionData.length, "Option is out of bounds");
         _;
     }
@@ -155,7 +154,8 @@ contract Poll is DataStructure, IPoll {
      * @dev 
      */
     function hasVoted(address voter) external virtual override view returns (bool) {
-        return _votingDate[voter] != 0;
+        //return _votingDate[voter] != 0;
+        return _voter[voter].votingDate != 0;
     }
     /**
      * @notice Returns if address has access to poll
@@ -190,8 +190,10 @@ contract Poll is DataStructure, IPoll {
     function setVote(address from, uint optionIndex) external virtual override isLive() canVote(from, optionIndex) returns (bool) {
         _optionData[optionIndex].nVotes += 1;
         // Set voting date to current block timestamp
-        _votingDate[from] = block.timestamp;
-        _voterOption[from] = optionIndex;
+        //_votingDate[from] = block.timestamp;
+        _voter[from].votingDate = block.timestamp;
+        //_voterOption[from] = optionIndex;
+        _voter[from].optionIndex = optionIndex;
         _data.nTotalVotes += 1;
         return true;
     }

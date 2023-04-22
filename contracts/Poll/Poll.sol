@@ -8,8 +8,9 @@ import "./IPoll.sol";
 
 /**
 * TODO: 1 Limit length of question. 2 Limit length of options array. 3 Limit length
-* of each option. 4 Function to payback from contract to voter a percentage (say 60-80%) 
-* of gwei cost for voting function execution. 5 Accept donations to contract, but avoid
+* of each option. 4 Function to pay a compensation of gwei, say 60-80%, from this
+* contract to voter once the voting function is done
+* 5 Accept donations to contract, but avoid
 * any withdrawal, even from the deployer of the contract
 *
 */

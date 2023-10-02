@@ -7,12 +7,14 @@ import "../Access/PrivacyAccess.sol";
 import "./IPoll.sol";
 
 /**
-* TODO: 1 Limit length of question. 2 Limit length of options array. 3 Limit length
-* of each option. 4 Function to pay a compensation of gwei, say 60-80%, from this
+* TODO: 
+* - Limit length of question. 
+* - Limit length of options array. 
+* - 3 Limit length of each option
+* - 4 Function to pay a compensation of gwei, say 60-80%, from this
 * contract to voter once the voting function is done
-* 5 Accept donations to contract, but avoid
+* - 5 Accept donations to contract, but avoid
 * any withdrawal, even from the deployer of the contract
-*
 */
 contract Poll is DataStructure, IPoll {
     address private _owner;
